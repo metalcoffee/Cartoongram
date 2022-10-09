@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block header %}
+
+<h1>{% block title %}Cartoongram posts{% endblock %}</h1>
+{% if g.user %}
+<a class="action" href="{{ url_for('blog.create') }}">New</a>
+{% endif %}
+{% endblock %}
+
+{% block content %}
+{% for post in posts %}
+<article class="post">
+    <header>
+        <div>
+            <h1>{{ post['title'] }}</h1>
+            <div class="about">by {{ post['username'] }} on {{ post['created'].strftime('%Y-%m-%d') }}</div>
+        </div>
+        {% if g.user['id'] == post['author_id'] %}
+
+        <a class="action" href="{{ url_for('blog.update', id=post['id']) }}">Edit</a>
+        {% endif %}
+    </header>
+    <p class="body">{{ post['body'] }}</p>
+
+            <button class="button" onclick="myFunction(this)">Like</button>
+
+            <script>
+function myFunction(v) {
+ getComputedStyle(v).backgroundColor === "rgb(255, 255, 255)" ?
+            v.style.backgroundColor = "red" :
+                    v.style.backgroundColor = "#fff"
+
+}
+            </script>
+</article>
+{% if not loop.last %}
+<hr>
+{% endif %}
+{% endfor %}
+{% endblock %}
